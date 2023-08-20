@@ -15,8 +15,7 @@ damab2 = pygame.image.load("images/dama_blue2.jpg")
 black = pygame.Color(0, 0, 0)
 red = pygame.Color(255, 0, 0)
 blue = pygame.Color(0, 0, 255)
-blue_turn = True
-red_turn = False
+turn = 1
 
 
 # DISPLAY GENERATION
@@ -48,7 +47,6 @@ class Square:
                 
 
     def select(self):
-
         self.pulsado = True
         if self.pulsado == True:
             for i in square_list:
@@ -59,11 +57,10 @@ class Square:
 
         for i in dama_list:
             if i.selected is True:
-                var1 = 1
                 for b in square_list:
                     if b in i.list:
                         if b is self:
-                            global red_turn, blue_turn
+                            global turn
                             aux_posy = self.posy
                             aux_posx = self.posx
                             name = 's' + str(len(square_list) + 1)
@@ -71,15 +68,7 @@ class Square:
                             square_list.append(name)
                             i.posx = aux_posx
                             i.posy = aux_posy
-                            i.top_rect = pygame.Rect((self.posy, self.posx),(75, 75))
-                            if blue_turn is True:
-                                    red_turn = True
-                                    blue_turn = False
-                            elif blue_turn is False:
-                                    red_turn = False
-                                    blue_turn = True
-
-
+                            i.top_rect = pygame.Rect((self.posy, self.posx), (75, 75))
 
                     if b in i.list2:
                         if b is self:
@@ -114,16 +103,12 @@ class Dama:
     
 
     def check_click(self):
-
+        global turn
         posm = pygame.mouse.get_pos()
         if self.top_rect.collidepoint(posm):
             if pygame.mouse.get_pressed()[0] is True:
-                if self.color is red:
-                    if red_turn is True:
-                        self.select()
-                elif self.color is blue:
-                    if blue_turn is True:  
-                        self.select()           
+                self.select()
+        
             else:
                 if self.color is red:
                     gameDisplay.blit(damar, (self.posy, self.posx, 10, 10))
@@ -175,18 +160,30 @@ class Dama:
             elif self.list[1] == (aux_posy2, aux_posx2):
                 self.list[1] = i
 
-        # TODO FINISH DAMA TOUCHING AND EATING
+          # TODO FINISH DAMA TOUCHING AND EATING
         for i in self.list:
             if isinstance(i, Dama) is True:
                 self.list2 = i.get_list2()
-                for i in square_list:
-                    aux_posy2 = i.posy
-                    aux_posx2 = i.posx
+                for b in square_list:
+                    aux_posy2 = b.posy
+                    aux_posx2 = b.posx
                     if self.list2[0] == (aux_posy2, aux_posx2):
-                        self.list2[0] = i
+                        self.list2[0] = b
                     elif self.list2[1] == (aux_posy2, aux_posx2):
-                        self.list2[1] = i
-
+                        self.list2[1] = b
+                if self.list[0] == i:
+                    for b in self.list2:
+                        if isinstance(b, Square) is True:
+                            if self.list2[0] == b:
+                                print('izq')
+                                print(self.list2)
+                elif self.list[1] == i:
+                    for b in self.list2:
+                        if isinstance(b, Square) is True:
+                            if self.list2[1] == b:
+                                print('drch')
+                                print(self.list2[1].posy, self.list2[1].posx)
+                        
         if pygame.mouse.get_pressed()[0] is True:
             self.selected = True
 
@@ -203,8 +200,6 @@ class Dama:
                         i.selected = False
                           
         pygame.display.update()
-
-
 
 
 # RED DAMA CREATION
@@ -286,4 +281,4 @@ while not gameExit:
             pygame.quit()
             sys.exit()
 
-#TODO FINISH TURNOS
+#TODO FINISH EATING AND TURNOS(IT CAN WAIT)

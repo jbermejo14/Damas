@@ -9,7 +9,7 @@ damar = pygame.image.load("images/dama_roja.jpg")
 damab = pygame.image.load("images/dama_blue.jpg")
 damar2 = pygame.image.load("images/dama_roja2.jpg")
 damab2 = pygame.image.load("images/dama_blue2.jpg")
-
+siu = 'siu'
 
 # COLOR GENERATION
 black = pygame.Color(0, 0, 0)

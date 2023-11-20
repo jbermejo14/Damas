@@ -43,7 +43,6 @@ class Square:
 
     def select(self):
         global turn, eated
-
         for i in dama_list:
             if i.selected is True:
                 for b in square_list:
@@ -64,10 +63,8 @@ class Square:
                             i.top_rect = pygame.Rect(self.pos, (75, 75))
                             for c in dama_list:
                                 if c.pos == eated:
-                                    print('eated', c.pos)
                                     name = Square(c.pos)
                                     square_list.append(name)
-                                    print(len(square_list))
 
 
 # DAMA CLASS
@@ -158,7 +155,6 @@ class Dama:
                                 if isinstance(b, Square) is True:
                                     if self.list2[0] == b:
                                         self.list2.pop(1)
-                                        print(self.list2)
                                         eated = i.pos
 
                         elif self.list[1] == i:
@@ -166,7 +162,6 @@ class Dama:
                                 if isinstance(b, Square) is True:
                                     if self.list2[1] == b:
                                         self.list2.pop(0)
-                                        print(self.list2)
                                         eated = i.pos
 
                 elif self.color is blue:

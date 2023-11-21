@@ -14,7 +14,7 @@ damab2 = pygame.image.load("images/dama_blue2.jpg")
 black = pygame.Color(0, 0, 0)
 red = pygame.Color(255, 0, 0)
 blue = pygame.Color(0, 0, 255)
-turn = 1
+turn = blue
 
 # DISPLAY GENERATION
 gameDisplay = pygame.display.set_mode((900, 600))
@@ -53,6 +53,7 @@ class Square:
                             square_list.append(name)
                             i.pos = aux_pos
                             i.top_rect = pygame.Rect(self.pos, (75, 75))
+                            print('he')
 
                     if b in i.list2:
                         if b is self:
@@ -61,11 +62,13 @@ class Square:
                             square_list.append(name)
                             i.pos = aux_pos
                             i.top_rect = pygame.Rect(self.pos, (75, 75))
+                            print('heaa')
                             for c in dama_list:
                                 if c.pos == eated:
                                     name = Square(c.pos)
                                     square_list.append(name)
-
+                                    c.pos = (0, 0)
+                                    c.top_rect = pygame.Rect(c.pos, (75, 75))
 
 # DAMA CLASS
 class Dama:
@@ -136,10 +139,8 @@ class Dama:
             elif self.list[1] == aux_pos2:
                 self.list[1] = i
 
-        # TODO FINISH DAMA TOUCHING AND EATING
         for i in self.list:
             if isinstance(i, Dama) is True:
-
                 if self.color is red:
                     if i.color is blue:
                         self.list2 = i.get_list2()
@@ -150,6 +151,13 @@ class Dama:
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = b
 
+                        for b in dama_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = i
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = i
+
                         if self.list[0] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
@@ -163,7 +171,7 @@ class Dama:
                                     if self.list2[1] == b:
                                         self.list2.pop(0)
                                         eated = i.pos
-
+                    print(self.list2)
                 elif self.color is blue:
                     if i.color is red:
                         self.list2 = i.get_list2()
@@ -174,12 +182,18 @@ class Dama:
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = b
 
+                        for b in dama_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = i
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = i
+
                         if self.list[0] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[0] == b:
                                         self.list2.pop(1)
-                                        print(self.list2)
                                         eated = i.pos
 
                         elif self.list[1] == i:
@@ -187,9 +201,8 @@ class Dama:
                                 if isinstance(b, Square) is True:
                                     if self.list2[1] == b:
                                         self.list2.pop(0)
-                                        print(self.list2)
                                         eated = i.pos
-
+                    print(self.list2)
         if pygame.mouse.get_pressed()[0] is True:
             if self.color is red:
                 gameDisplay.blit(damar2, (self.pos[0], self.pos[1], 10, 10))
@@ -278,3 +291,15 @@ while not gameExit:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+
+################################################################
+# TODO
+#
+# Correct lists writing on top of each other before eating
+# Correct Damas eating on top of each other
+# Turns
+# Initial page
+# Names and Points
+#
+###################################################################

@@ -14,7 +14,8 @@ damab2 = pygame.image.load("images/dama_blue2.jpg")
 black = pygame.Color(0, 0, 0)
 red = pygame.Color(255, 0, 0)
 blue = pygame.Color(0, 0, 255)
-turn = blue
+turn = 'blue'
+counter = 0
 
 # DISPLAY GENERATION
 gameDisplay = pygame.display.set_mode((900, 600))
@@ -29,7 +30,6 @@ pygame.draw.rect(gameDisplay, black, (0, 0, 150, 600))
 
 # SQUARE CLASS
 class Square:
-
     def __init__(self, pos):
         self.top_rect = pygame.Rect(pos, (75, 75))
         self.pos = pos
@@ -42,38 +42,49 @@ class Square:
                 self.select()
 
     def select(self):
-        global turn, eated
+        global turn, eated, counter
         for i in dama_list:
             if i.selected is True:
                 for b in square_list:
                     if b in i.list:
                         if b is self:
-                            aux_pos = self.pos
-                            name = Square(i.pos)
-                            square_list.append(name)
-                            i.pos = aux_pos
-                            i.top_rect = pygame.Rect(self.pos, (75, 75))
-                            print('he')
+                            if turn == i.turn:
+                                aux_pos = self.pos
+                                name = Square(i.pos)
+                                square_list.append(name)
+                                i.pos = aux_pos
+                                i.top_rect = pygame.Rect(self.pos, (75, 75))
+                                if turn == 'blue':
+                                    turn = 'red'
+                                elif turn == 'red':
+                                    turn = 'blue'
 
                     if b in i.list2:
                         if b is self:
-                            aux_pos = self.pos
-                            name = Square(i.pos)
-                            square_list.append(name)
-                            i.pos = aux_pos
-                            i.top_rect = pygame.Rect(self.pos, (75, 75))
-                            print('heaa')
-                            for c in dama_list:
-                                if c.pos == eated:
-                                    name = Square(c.pos)
-                                    square_list.append(name)
-                                    c.pos = (0, 0)
-                                    c.top_rect = pygame.Rect(c.pos, (75, 75))
+                            if turn == i.turn:
+                                aux_pos = self.pos
+                                name = Square(i.pos)
+                                square_list.append(name)
+                                i.pos = aux_pos
+                                i.top_rect = pygame.Rect(self.pos, (75, 75))
+                                for c in dama_list:
+                                    if c.pos == eated:
+                                        name = Square(c.pos)
+                                        square_list.append(name)
+                                        c.pos = (0, 0)
+                                        c.top_rect = pygame.Rect(c.pos, (75, 75))
+
+
+                                if turn == 'blue':
+                                    turn = 'red'
+                                elif turn == 'red':
+                                    turn = 'blue'
 
 # DAMA CLASS
 class Dama:
 
-    def __init__(self, pos, color, selected):
+    def __init__(self, pos, color, selected, turn):
+        self.turn = turn
         self.list = []
         self.list2 = []
         self.selected = selected
@@ -93,7 +104,6 @@ class Dama:
         if self.top_rect.collidepoint(posm):
             if pygame.mouse.get_pressed()[0] is True:
                 self.select()
-
             else:
                 if self.color is red:
                     gameDisplay.blit(damar, (self.pos[0], self.pos[1], 10, 10))
@@ -122,9 +132,13 @@ class Dama:
         return pos_list
 
     def select(self):
-        global eated
+        global turn, eated
         self.selected = True
         self.list = self.get_list()
+        print("")
+        print(self)
+        print("Near Position:", self.list)
+        print("Positon:", self.pos)
         for i in dama_list:
             aux_pos = i.pos
             if self.list[0] == aux_pos:
@@ -138,7 +152,7 @@ class Dama:
                 self.list[0] = i
             elif self.list[1] == aux_pos2:
                 self.list[1] = i
-
+        print(self.list)
         for i in self.list:
             if isinstance(i, Dama) is True:
                 if self.color is red:
@@ -171,7 +185,7 @@ class Dama:
                                     if self.list2[1] == b:
                                         self.list2.pop(0)
                                         eated = i.pos
-                    print(self.list2)
+                    print("Objects near rival dama1:", self.list2)
                 elif self.color is blue:
                     if i.color is red:
                         self.list2 = i.get_list2()
@@ -202,7 +216,8 @@ class Dama:
                                     if self.list2[1] == b:
                                         self.list2.pop(0)
                                         eated = i.pos
-                    print(self.list2)
+                    print("Objects near rival dama2:", self.list2)
+                print("")
         if pygame.mouse.get_pressed()[0] is True:
             if self.color is red:
                 gameDisplay.blit(damar2, (self.pos[0], self.pos[1], 10, 10))
@@ -218,32 +233,32 @@ class Dama:
 
 
 # RED DAMA CREATION
-dr1 = Dama((225, 0), red, False)
-dr2 = Dama((375, 0), red, False)
-dr3 = Dama((525, 0), red, False)
-dr4 = Dama((675, 0), red, False)
-dr5 = Dama((150, 75), red, False)
-dr6 = Dama((300, 75), red, False)
-dr7 = Dama((450, 75), red, False)
-dr8 = Dama((600, 75), red, False)
-dr9 = Dama((225, 150), red, False)
-dr10 = Dama((375, 150), red, False)
-dr11 = Dama((525, 150), red, False)
-dr12 = Dama((675, 150), red, False)
+dr1 = Dama((225, 0), red, False, 'red')
+dr2 = Dama((375, 0), red, False, 'red')
+dr3 = Dama((525, 0), red, False, 'red')
+dr4 = Dama((675, 0), red, False, 'red')
+dr5 = Dama((150, 75), red, False, 'red')
+dr6 = Dama((300, 75), red, False, 'red')
+dr7 = Dama((450, 75), red, False, 'red')
+dr8 = Dama((600, 75), red, False, 'red')
+dr9 = Dama((225, 150), red, False, 'red')
+dr10 = Dama((375, 150), red, False, 'red')
+dr11 = Dama((525, 150), red, False, 'red')
+dr12 = Dama((675, 150), red, False, 'red')
 
 # BLUE DAMA CREATION
-db1 = Dama((150, 375), blue, False)
-db2 = Dama((300, 375), blue, False)
-db3 = Dama((450, 375), blue, False)
-db4 = Dama((600, 375), blue, False)
-db5 = Dama((225, 450), blue, False)
-db6 = Dama((375, 450), blue, False)
-db7 = Dama((525, 450), blue, False)
-db8 = Dama((675, 450), blue, False)
-db9 = Dama((150, 525), blue, False)
-db10 = Dama((300, 525), blue, False)
-db11 = Dama((450, 525), blue, False)
-db12 = Dama((600, 525), blue, False)
+db1 = Dama((150, 375), blue, False, 'blue')
+db2 = Dama((300, 375), blue, False, 'blue')
+db3 = Dama((450, 375), blue, False, 'blue')
+db4 = Dama((600, 375), blue, False, 'blue')
+db5 = Dama((225, 450), blue, False, 'blue')
+db6 = Dama((375, 450), blue, False, 'blue')
+db7 = Dama((525, 450), blue, False, 'blue')
+db8 = Dama((675, 450), blue, False, 'blue')
+db9 = Dama((150, 525), blue, False, 'blue')
+db10 = Dama((300, 525), blue, False, 'blue')
+db11 = Dama((450, 525), blue, False, 'blue')
+db12 = Dama((600, 525), blue, False, 'blue')
 
 # BOARD CREATION
 s1 = Square((150, 225))
@@ -281,7 +296,6 @@ def board_click_checks():
 
 pygame.display.update()
 
-
 while not gameExit:
 
     board_click_checks()
@@ -292,13 +306,12 @@ while not gameExit:
             pygame.quit()
             sys.exit()
 
-
 ################################################################
 # TODO
 #
 # Correct lists writing on top of each other before eating
 # Correct Damas eating on top of each other
-# Turns
+# Turns Finish it!!!!!
 # Initial page
 # Names and Points
 #

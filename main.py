@@ -216,14 +216,16 @@ class Dama:
                                     if self.list2[1] == b:
                                         self.aux_list.append(b)
                                         # eated = i.pos
-            for i in self.aux_list:
-                if isinstance(i, Square) is True:
-                    if turn == 'blue':
-                        turn = 'red'
-                    elif turn == 'red':
-                        turn = 'blue'
-                    self.selected = True
-                    print("dopble")
+
+        for i in self.aux_list:
+            print(i, i.pos, turn)
+            if isinstance(i, Square) is True:
+                self.selected = True
+                print("dopble")
+            if turn == 'blue':
+                turn = 'red'
+            elif turn == 'red':
+                turn = 'blue'
 
     def select(self):
         global turn, eated

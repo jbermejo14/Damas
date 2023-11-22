@@ -12,10 +12,11 @@ damab2 = pygame.image.load("images/dama_blue2.jpg")
 
 # COLOR GENERATION
 black = pygame.Color(0, 0, 0)
-red = pygame.Color(255, 0, 0)
-blue = pygame.Color(0, 0, 255)
+red = pygame.Color(237, 27, 36)
+blue = pygame.Color(0, 163, 232)
 turn = 'blue'
-counter = 0
+red_counter = 0
+blue_counter = 0
 eated = None
 
 # DISPLAY GENERATION
@@ -24,10 +25,8 @@ pygame.init()
 pygame.display.set_caption("Damas")
 gameExit = False
 gameDisplay.fill('white')
-
 pygame.draw.rect(gameDisplay, black, (750, 0, 150, 600))
 pygame.draw.rect(gameDisplay, black, (0, 0, 150, 600))
-
 
 # SQUARE CLASS
 class Square:
@@ -43,7 +42,7 @@ class Square:
                 self.select()
 
     def select(self):
-        global turn, eated, counter
+        global turn, eated, red_counter, blue_counter
         for i in dama_list:
             if i.selected is True:
                 for b in square_list:
@@ -55,6 +54,12 @@ class Square:
                                 square_list.append(name)
                                 i.pos = aux_pos
                                 i.top_rect = pygame.Rect(self.pos, (75, 75))
+                                if i.color == blue:
+                                    if i.pos[1] == 0:
+                                        print("Heeey")
+                                elif i.color == red:
+                                    if i.pos[1] == 525:
+                                        print("Heeey")
                                 if turn == 'blue':
                                     turn = 'red'
                                 elif turn == 'red':
@@ -74,7 +79,21 @@ class Square:
                                         square_list.append(name)
                                         c.pos = (0, 0)
                                         c.top_rect = pygame.Rect(c.pos, (75, 75))
+                                        if turn == 'blue':
+                                            red_counter = red_counter + 1
+                                            print(red_counter)
+                                        elif turn == 'red':
+                                            blue_counter = blue_counter + 1
+                                            print(blue_counter)
+                                        pygame.draw.rect(gameDisplay, black, (750, 0, 150, 600))
+                                        pygame.draw.rect(gameDisplay, black, (0, 0, 150, 600))
                                         i.double_eat()
+                                if i.color == blue:
+                                    if i.pos[1] == 0:
+                                        print("Heeey")
+                                elif i.color == red:
+                                    if i.pos[1] == 525:
+                                        print("Heeey")
                                 if turn == 'blue':
                                     turn = 'red'
                                 elif turn == 'red':
@@ -152,9 +171,7 @@ class Dama:
                 self.list[1] = i
 
         for i in self.list:
-            print(self.list)
             if isinstance(i, Dama) is True:
-                print('b')
                 if self.color is red:
                     if i.color is blue:
                         self.list2 = i.get_list2()
@@ -177,14 +194,12 @@ class Dama:
                                 if isinstance(b, Square) is True:
                                     if self.list2[0] == b:
                                         self.aux_list.append(b)
-                                        # eated = i.pos
 
                         elif self.list[1] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[1] == b:
                                         self.aux_list.append(b)
-                                        # eated = i.pos
 
                 elif self.color is blue:
                     if i.color is red:
@@ -208,20 +223,16 @@ class Dama:
                                 if isinstance(b, Square) is True:
                                     if self.list2[0] == b:
                                         self.aux_list.append(b)
-                                        # eated = i.pos
 
                         elif self.list[1] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[1] == b:
                                         self.aux_list.append(b)
-                                        # eated = i.pos
 
         for i in self.aux_list:
-            print(i, i.pos, turn)
             if isinstance(i, Square) is True:
                 self.selected = True
-                print("dopble")
             if turn == 'blue':
                 turn = 'red'
             elif turn == 'red':
@@ -309,7 +320,6 @@ class Dama:
                                     if self.list2[1] == b:
                                         self.aux_list.append(b)
                                         eated = i.pos
-
         for i in dama_list:
             if i.selected is True:
                 if i is not self:
@@ -373,16 +383,13 @@ damar_list = [dr1, dr2, dr3, dr4, dr5, dr6, dr7, dr8, dr9, dr10, dr11, dr12]
 # BLUE DAMA LIST
 damab_list = [db1, db2, db3, db4, db5, db6, db7, db8, db9, db10, db11, db12]
 
-
 def damab_click_checks():
     for i in dama_list:
         i.check_click()
 
-
 def board_click_checks():
     for i in square_list:
         i.check_click()
-
 
 pygame.display.update()
 
@@ -390,6 +397,13 @@ while not gameExit:
 
     board_click_checks()
     damab_click_checks()
+
+    font = pygame.font.SysFont(None, 150)
+    img1 = font.render(str(red_counter), True, blue)
+    gameDisplay.blit(img1, (800, 260))
+
+    img2 = font.render(str(blue_counter), True, red)
+    gameDisplay.blit(img2, (50, 260))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -399,10 +413,6 @@ while not gameExit:
 ################################################################
 # TODO
 #
-# Correct lists writing on top of each other before eating
-# Correct Damas eating on top of each other
-# Turns Finish it!!!!!
-# Initial page
-# Names and Points
+# Add Queen
 #
 ###################################################################

@@ -16,6 +16,7 @@ red = pygame.Color(255, 0, 0)
 blue = pygame.Color(0, 0, 255)
 turn = 'blue'
 counter = 0
+eated = None
 
 # DISPLAY GENERATION
 gameDisplay = pygame.display.set_mode((900, 600))
@@ -59,7 +60,7 @@ class Square:
                                 elif turn == 'red':
                                     turn = 'blue'
 
-                    if b in i.list2:
+                    if b in i.aux_list:
                         if b is self:
                             if turn == i.turn:
                                 aux_pos = self.pos
@@ -73,8 +74,7 @@ class Square:
                                         square_list.append(name)
                                         c.pos = (0, 0)
                                         c.top_rect = pygame.Rect(c.pos, (75, 75))
-
-
+                                        i.double_eat()
                                 if turn == 'blue':
                                     turn = 'red'
                                 elif turn == 'red':
@@ -87,6 +87,7 @@ class Dama:
         self.turn = turn
         self.list = []
         self.list2 = []
+        self.aux_list = []
         self.selected = selected
         self.pos = pos
         self.top_rect = pygame.Rect(self.pos, (75, 75))
@@ -131,14 +132,11 @@ class Dama:
             pos_list.append((self.pos[0] - 75, self.pos[1] + 75))
         return pos_list
 
-    def select(self):
-        global turn, eated
+    def double_eat(self):
+        global eated, turn
+        self.aux_list = []
         self.selected = True
         self.list = self.get_list()
-        print("")
-        print(self)
-        print("Near Position:", self.list)
-        print("Positon:", self.pos)
         for i in dama_list:
             aux_pos = i.pos
             if self.list[0] == aux_pos:
@@ -152,7 +150,100 @@ class Dama:
                 self.list[0] = i
             elif self.list[1] == aux_pos2:
                 self.list[1] = i
-        print(self.list)
+
+        for i in self.list:
+            print(self.list)
+            if isinstance(i, Dama) is True:
+                print('b')
+                if self.color is red:
+                    if i.color is blue:
+                        self.list2 = i.get_list2()
+                        for b in square_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = b
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = b
+
+                        for b in dama_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = i
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = i
+
+                        if self.list[0] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[0] == b:
+                                        self.aux_list.append(b)
+                                        # eated = i.pos
+
+                        elif self.list[1] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[1] == b:
+                                        self.aux_list.append(b)
+                                        # eated = i.pos
+
+                elif self.color is blue:
+                    if i.color is red:
+                        self.list2 = i.get_list2()
+                        for b in square_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = b
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = b
+
+                        for b in dama_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = i
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = i
+
+                        if self.list[0] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[0] == b:
+                                        self.aux_list.append(b)
+                                        # eated = i.pos
+
+                        elif self.list[1] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[1] == b:
+                                        self.aux_list.append(b)
+                                        # eated = i.pos
+            for i in self.aux_list:
+                if isinstance(i, Square) is True:
+                    if turn == 'blue':
+                        turn = 'red'
+                    elif turn == 'red':
+                        turn = 'blue'
+                    self.selected = True
+                    print("dopble")
+
+    def select(self):
+        global turn, eated
+        self.aux_list = []
+        self.selected = True
+        self.list = self.get_list()
+        for i in dama_list:
+            aux_pos = i.pos
+            if self.list[0] == aux_pos:
+                self.list[0] = i
+            elif self.list[1] == aux_pos:
+                self.list[1] = i
+
+        for i in square_list:
+            aux_pos2 = i.pos
+            if self.list[0] == aux_pos2:
+                self.list[0] = i
+            elif self.list[1] == aux_pos2:
+                self.list[1] = i
+
         for i in self.list:
             if isinstance(i, Dama) is True:
                 if self.color is red:
@@ -176,16 +267,16 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[0] == b:
-                                        self.list2.pop(1)
+                                        self.aux_list.append(b)
                                         eated = i.pos
 
                         elif self.list[1] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[1] == b:
-                                        self.list2.pop(0)
+                                        self.aux_list.append(b)
                                         eated = i.pos
-                    print("Objects near rival dama1:", self.list2)
+
                 elif self.color is blue:
                     if i.color is red:
                         self.list2 = i.get_list2()
@@ -207,30 +298,27 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[0] == b:
-                                        self.list2.pop(1)
+                                        self.aux_list.append(b)
                                         eated = i.pos
 
                         elif self.list[1] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[1] == b:
-                                        self.list2.pop(0)
+                                        self.aux_list.append(b)
                                         eated = i.pos
-                    print("Objects near rival dama2:", self.list2)
-                print("")
+
+        for i in dama_list:
+            if i.selected is True:
+                if i is not self:
+                    i.selected = False
         if pygame.mouse.get_pressed()[0] is True:
             if self.color is red:
                 gameDisplay.blit(damar2, (self.pos[0], self.pos[1], 10, 10))
             elif self.color is blue:
                 gameDisplay.blit(damab2, (self.pos[0], self.pos[1], 10, 10))
 
-            for i in dama_list:
-                if i.selected is True:
-                    if i is not self:
-                        i.selected = False
-
         pygame.display.update()
-
 
 # RED DAMA CREATION
 dr1 = Dama((225, 0), red, False, 'red')

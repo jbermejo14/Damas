@@ -2,7 +2,7 @@
 import pygame
 import sys
 import time
-
+import os
 # IMAGES GENERATION
 bg = pygame.image.load("images/bg.png")
 damar = pygame.image.load("images/dama_roja.jpg")
@@ -18,6 +18,10 @@ turn = 'blue'
 red_counter = 0
 blue_counter = 0
 eated = None
+
+# SOUND GENERATION
+pygame.mixer.init()
+eat_sound = pygame.mixer.Sound("sounds/eat_sound.mp3")
 
 # DISPLAY GENERATION
 gameDisplay = pygame.display.set_mode((900, 600))
@@ -56,10 +60,10 @@ class Square:
                                 i.top_rect = pygame.Rect(self.pos, (75, 75))
                                 if i.color == blue:
                                     if i.pos[1] == 0:
-                                        print("Heeey")
+                                        i.queen()
                                 elif i.color == red:
                                     if i.pos[1] == 525:
-                                        print("Heeey")
+                                        i.queen()
                                 if turn == 'blue':
                                     turn = 'red'
                                 elif turn == 'red':
@@ -90,15 +94,15 @@ class Square:
                                         i.double_eat()
                                 if i.color == blue:
                                     if i.pos[1] == 0:
-                                        print("Heeey")
+                                        i.queen()
                                 elif i.color == red:
                                     if i.pos[1] == 525:
-                                        print("Heeey")
+                                        i.queen()
                                 if turn == 'blue':
                                     turn = 'red'
                                 elif turn == 'red':
                                     turn = 'blue'
-
+                                eat_sound.play()
 # DAMA CLASS
 class Dama:
 
@@ -111,6 +115,7 @@ class Dama:
         self.pos = pos
         self.top_rect = pygame.Rect(self.pos, (75, 75))
         self.color = color
+        self.is_queen = False
 
         if self.color is red:
             gameDisplay.blit(damar, (self.pos[0], self.pos[1], 10, 10))
@@ -123,7 +128,10 @@ class Dama:
         posm = pygame.mouse.get_pos()
         if self.top_rect.collidepoint(posm):
             if pygame.mouse.get_pressed()[0] is True:
-                self.select()
+                if self.is_queen is True:
+                    self.queen()
+                elif self.is_queen is False:
+                    self.select()
             else:
                 if self.color is red:
                     gameDisplay.blit(damar, (self.pos[0], self.pos[1], 10, 10))
@@ -149,6 +157,22 @@ class Dama:
         elif self.color is blue:
             pos_list.append((self.pos[0] + 75, self.pos[1] + 75))
             pos_list.append((self.pos[0] - 75, self.pos[1] + 75))
+        return pos_list
+
+    def get_list_queen(self):
+        pos_list = []
+        pos_list.append((self.pos[0] - 75, self.pos[1] - 75))
+        pos_list.append((self.pos[0] + 75, self.pos[1] - 75))
+        pos_list.append((self.pos[0] + 75, self.pos[1] + 75))
+        pos_list.append((self.pos[0] - 75, self.pos[1] + 75))
+        return pos_list
+
+    def get_list_queen2(self):
+        pos_list = []
+        pos_list.append((self.pos[0] - 75, self.pos[1] - 75))
+        pos_list.append((self.pos[0] + 75, self.pos[1] - 75))
+        pos_list.append((self.pos[0] + 75, self.pos[1] + 75))
+        pos_list.append((self.pos[0] - 75, self.pos[1] + 75))
         return pos_list
 
     def double_eat(self):
@@ -332,6 +356,100 @@ class Dama:
 
         pygame.display.update()
 
+    def queen(self):
+        self.is_queen = True
+        global turn, eated
+        self.aux_list = []
+        self.selected = True
+        self.list = self.get_list_queen()
+        for i in dama_list:
+            aux_pos = i.pos
+            if self.list[0] == aux_pos:
+                self.list[0] = i
+            elif self.list[1] == aux_pos:
+                self.list[1] = i
+
+        for i in square_list:
+            aux_pos2 = i.pos
+            if self.list[0] == aux_pos2:
+                self.list[0] = i
+            elif self.list[1] == aux_pos2:
+                self.list[1] = i
+
+        for i in self.list:
+            if isinstance(i, Dama) is True:
+                if self.color is red:
+                    if i.color is blue:
+                        self.list2 = i.get_list2()
+                        for b in square_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = b
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = b
+
+                        for b in dama_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = i
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = i
+
+                        if self.list[0] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[0] == b:
+                                        self.aux_list.append(b)
+                                        eated = i.pos
+
+                        elif self.list[1] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[1] == b:
+                                        self.aux_list.append(b)
+                                        eated = i.pos
+
+                elif self.color is blue:
+                    if i.color is red:
+                        self.list2 = i.get_list2()
+                        for b in square_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = b
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = b
+
+                        for b in dama_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = i
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = i
+
+                        if self.list[0] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[0] == b:
+                                        self.aux_list.append(b)
+                                        eated = i.pos
+
+                        elif self.list[1] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[1] == b:
+                                        self.aux_list.append(b)
+                                        eated = i.pos
+        for i in dama_list:
+            if i.selected is True:
+                if i is not self:
+                    i.selected = False
+        if pygame.mouse.get_pressed()[0] is True:
+            if self.color is red:
+                gameDisplay.blit(damar2, (self.pos[0], self.pos[1], 10, 10))
+            elif self.color is blue:
+                gameDisplay.blit(damab2, (self.pos[0], self.pos[1], 10, 10))
+
+        pygame.display.update()
 # RED DAMA CREATION
 dr1 = Dama((225, 0), red, False, 'red')
 dr2 = Dama((375, 0), red, False, 'red')
@@ -415,4 +533,4 @@ while not gameExit:
 #
 # Add Queen
 #
-###################################################################
+################################################################

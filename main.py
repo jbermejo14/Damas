@@ -93,7 +93,10 @@ class Square:
                                             print(blue_counter)
                                         pygame.draw.rect(gameDisplay, black, (750, 0, 150, 600))
                                         pygame.draw.rect(gameDisplay, black, (0, 0, 150, 600))
-                                        i.double_eat()
+                                        if i.is_queen is True:
+                                            i.queen_double_eat()
+                                        else:
+                                            i.double_eat()
                                 if i.color == blue:
                                     if i.pos[1] == 0:
                                         i.queen()
@@ -272,6 +275,133 @@ class Dama:
             elif turn == 'red':
                 turn = 'blue'
 
+    def queen_double_eat(self):
+        global eated, turn
+        self.aux_list = []
+        self.selected = True
+        self.list = self.get_list_queen()
+        for i in dama_list:
+            aux_pos = i.pos
+            if self.list[0] == aux_pos:
+                self.list[0] = i
+            elif self.list[1] == aux_pos:
+                self.list[1] = i
+            elif self.list[2] == aux_pos:
+                self.list[2] = i
+            elif self.list[3] == aux_pos:
+                self.list[3] = i
+
+        for i in square_list:
+            aux_pos2 = i.pos
+            if self.list[0] == aux_pos2:
+                self.list[0] = i
+            elif self.list[1] == aux_pos2:
+                self.list[1] = i
+            elif self.list[2] == aux_pos2:
+                self.list[2] = i
+            elif self.list[3] == aux_pos2:
+                self.list[3] = i
+
+        for i in self.list:
+            if isinstance(i, Dama) is True:
+                if self.color is red:
+                    self.list2 = i.get_list_queen2()
+                    for b in square_list:
+                        aux_pos2 = b.pos
+                        if self.list2[0] == aux_pos2:
+                            self.list2[0] = b
+                        elif self.list2[1] == aux_pos2:
+                            self.list2[1] = b
+                        elif self.list[2] == aux_pos2:
+                            self.list[2] = b
+                        elif self.list[3] == aux_pos2:
+                            self.list[3] = b
+
+                    for b in dama_list:
+                        aux_pos2 = b.pos
+                        if self.list2[0] == aux_pos2:
+                            self.list2[0] = b
+                        elif self.list2[1] == aux_pos2:
+                            self.list2[1] = b
+                        elif self.list[2] == aux_pos2:
+                            self.list[2] = b
+                        elif self.list[3] == aux_pos2:
+                            self.list[3] = b
+
+                        if self.list[0] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[0] == b:
+                                        self.aux_list.append(b)
+
+                        elif self.list[1] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[1] == b:
+                                        self.aux_list.append(b)
+
+                        elif self.list[2] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[2] == b:
+                                        self.aux_list.append(b)
+
+                        elif self.list[3] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[3] == b:
+                                        self.aux_list.append(b)
+
+                elif self.color is blue:
+                    if i.color is red:
+                        self.list2 = i.get_list_queen2()
+                        for b in square_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = b
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = b
+
+                        for b in dama_list:
+                            aux_pos2 = b.pos
+                            if self.list2[0] == aux_pos2:
+                                self.list2[0] = i
+                            elif self.list2[1] == aux_pos2:
+                                self.list2[1] = i
+
+                        if self.list[0] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[0] == b:
+                                        self.aux_list.append(b)
+
+                        elif self.list[1] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[1] == b:
+                                        self.aux_list.append(b)
+
+                        elif self.list[2] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[2] == b:
+                                        self.aux_list.append(b)
+
+                        elif self.list[3] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[3] == b:
+                                        self.aux_list.append(b)
+
+
+        for i in self.aux_list:
+            if isinstance(i, Square) is True:
+                self.selected = True
+            if turn == 'blue':
+                turn = 'red'
+            elif turn == 'red':
+                turn = 'blue'
+
     def select(self):
         global turn, eated
         self.aux_list = []
@@ -406,20 +536,20 @@ class Dama:
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = b
                             elif self.list[2] == aux_pos2:
-                                self.list[2] = i
+                                self.list[2] = b
                             elif self.list[3] == aux_pos2:
-                                self.list[3] = i
+                                self.list[3] = b
 
                         for b in dama_list:
                             aux_pos2 = b.pos
                             if self.list2[0] == aux_pos2:
-                                self.list2[0] = i
+                                self.list2[0] = b
                             elif self.list2[1] == aux_pos2:
-                                self.list2[1] = i
+                                self.list2[1] = b
                             elif self.list[2] == aux_pos2:
-                                self.list[2] = i
+                                self.list[2] = b
                             elif self.list[3] == aux_pos2:
-                                self.list[3] = i
+                                self.list[3] = b
 
                         if self.list[0] == i:
                             for b in self.list2:
@@ -435,16 +565,18 @@ class Dama:
                                         self.aux_list.append(b)
                                         eated = i.pos
 
-                        elif self.list[0] == i:
+                        elif self.list[2] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
+                                    ##FALLAN ESTO de abajo
                                     if self.list2[2] == b:
                                         self.aux_list.append(b)
                                         eated = i.pos
 
-                        elif self.list[1] == i:
+                        elif self.list[3] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
+                                    ##FALLAN ESTO de abajo
                                     if self.list2[3] == b:
                                         self.aux_list.append(b)
                                         eated = i.pos
@@ -459,20 +591,20 @@ class Dama:
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = b
                             elif self.list[2] == aux_pos2:
-                                self.list[2] = i
+                                self.list[2] = b
                             elif self.list[3] == aux_pos2:
-                                self.list[3] = i
+                                self.list[3] = b
 
                         for b in dama_list:
                             aux_pos2 = b.pos
                             if self.list2[0] == aux_pos2:
-                                self.list2[0] = i
+                                self.list2[0] = b
                             elif self.list2[1] == aux_pos2:
-                                self.list2[1] = i
+                                self.list2[1] = b
                             elif self.list[2] == aux_pos2:
-                                self.list[2] = i
+                                self.list[2] = b
                             elif self.list[3] == aux_pos2:
-                                self.list[3] = i
+                                self.list[3] = b
 
                         if self.list[0] == i:
                             for b in self.list2:
@@ -480,7 +612,7 @@ class Dama:
                                     if self.list2[0] == b:
                                         self.aux_list.append(b)
                                         eated = i.pos
-
+                                        print(eated)
                         elif self.list[1] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
@@ -488,20 +620,23 @@ class Dama:
                                         self.aux_list.append(b)
                                         eated = i.pos
 
-                        elif self.list[0] == i:
+                        elif self.list[2] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
+                                    ## Falla esto de abajo
                                     if self.list2[2] == b:
+                                        print("2")
                                         self.aux_list.append(b)
                                         eated = i.pos
 
-                        elif self.list[1] == i:
+                        elif self.list[3] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
+                                    ##Falla esto de abajo
                                     if self.list2[3] == b:
+                                        print("3")
                                         self.aux_list.append(b)
                                         eated = i.pos
-
         for i in dama_list:
             if i.selected is True:
                 if i is not self:
@@ -587,13 +722,6 @@ while not gameExit:
     board_click_checks()
     damab_click_checks()
 
-    font = pygame.font.SysFont(None, 150)
-    img1 = font.render(str(red_counter), True, blue)
-    gameDisplay.blit(img1, (800, 260))
-
-    img2 = font.render(str(blue_counter), True, red)
-    gameDisplay.blit(img2, (50, 260))
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -602,6 +730,6 @@ while not gameExit:
 ################################################################
 # TODO
 #
-# Add Queen
+#
 #
 ################################################################

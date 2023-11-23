@@ -9,6 +9,10 @@ damar = pygame.image.load("images/dama_roja.jpg")
 damab = pygame.image.load("images/dama_blue.jpg")
 damar2 = pygame.image.load("images/dama_roja2.jpg")
 damab2 = pygame.image.load("images/dama_blue2.jpg")
+queenb = pygame.image.load("images/queen_blue.jpg")
+queenb2 = pygame.image.load("images/queen_blue2.jpg")
+queenr = pygame.image.load("images/queen_roja.jpg")
+queenr2 = pygame.image.load("images/queen_roja2.jpg")
 
 # COLOR GENERATION
 black = pygame.Color(0, 0, 0)
@@ -19,9 +23,6 @@ red_counter = 0
 blue_counter = 0
 eated = None
 
-# SOUND GENERATION
-pygame.mixer.init()
-eat_sound = pygame.mixer.Sound("sounds/eat_sound.mp3")
 
 # DISPLAY GENERATION
 gameDisplay = pygame.display.set_mode((900, 600))
@@ -31,6 +32,7 @@ gameExit = False
 gameDisplay.fill('white')
 pygame.draw.rect(gameDisplay, black, (750, 0, 150, 600))
 pygame.draw.rect(gameDisplay, black, (0, 0, 150, 600))
+
 
 # SQUARE CLASS
 class Square:
@@ -102,7 +104,7 @@ class Square:
                                     turn = 'red'
                                 elif turn == 'red':
                                     turn = 'blue'
-                                eat_sound.play()
+
 # DAMA CLASS
 class Dama:
 
@@ -133,10 +135,18 @@ class Dama:
                 elif self.is_queen is False:
                     self.select()
             else:
-                if self.color is red:
-                    gameDisplay.blit(damar, (self.pos[0], self.pos[1], 10, 10))
-                elif self.color is blue:
-                    gameDisplay.blit(damab, (self.pos[0], self.pos[1], 10, 10))
+                if self.is_queen is True:
+                    if self.color is red:
+                        gameDisplay.blit(queenr, (self.pos[0], self.pos[1], 10, 10))
+                    elif self.color is blue:
+                        gameDisplay.blit(queenb, (self.pos[0], self.pos[1], 10, 10))
+
+                elif self.is_queen is False:
+                    if self.color is red:
+                        gameDisplay.blit(damar, (self.pos[0], self.pos[1], 10, 10))
+                    elif self.color is blue:
+                        gameDisplay.blit(damab, (self.pos[0], self.pos[1], 10, 10))
+
                 pygame.display.update()
 
     def get_list(self):
@@ -368,6 +378,10 @@ class Dama:
                 self.list[0] = i
             elif self.list[1] == aux_pos:
                 self.list[1] = i
+            elif self.list[2] == aux_pos:
+                self.list[2] = i
+            elif self.list[3] == aux_pos:
+                self.list[3] = i
 
         for i in square_list:
             aux_pos2 = i.pos
@@ -375,18 +389,26 @@ class Dama:
                 self.list[0] = i
             elif self.list[1] == aux_pos2:
                 self.list[1] = i
+            elif self.list[2] == aux_pos2:
+                self.list[2] = i
+            elif self.list[3] == aux_pos2:
+                self.list[3] = i
 
         for i in self.list:
             if isinstance(i, Dama) is True:
                 if self.color is red:
                     if i.color is blue:
-                        self.list2 = i.get_list2()
+                        self.list2 = i.get_list_queen2()
                         for b in square_list:
                             aux_pos2 = b.pos
                             if self.list2[0] == aux_pos2:
                                 self.list2[0] = b
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = b
+                            elif self.list[2] == aux_pos2:
+                                self.list[2] = i
+                            elif self.list[3] == aux_pos2:
+                                self.list[3] = i
 
                         for b in dama_list:
                             aux_pos2 = b.pos
@@ -394,6 +416,10 @@ class Dama:
                                 self.list2[0] = i
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = i
+                            elif self.list[2] == aux_pos2:
+                                self.list[2] = i
+                            elif self.list[3] == aux_pos2:
+                                self.list[3] = i
 
                         if self.list[0] == i:
                             for b in self.list2:
@@ -406,18 +432,36 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[1] == b:
+                                        self.aux_list.append(b)
+                                        eated = i.pos
+
+                        elif self.list[0] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[2] == b:
+                                        self.aux_list.append(b)
+                                        eated = i.pos
+
+                        elif self.list[1] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[3] == b:
                                         self.aux_list.append(b)
                                         eated = i.pos
 
                 elif self.color is blue:
                     if i.color is red:
-                        self.list2 = i.get_list2()
+                        self.list2 = i.get_list_queen2()
                         for b in square_list:
                             aux_pos2 = b.pos
                             if self.list2[0] == aux_pos2:
                                 self.list2[0] = b
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = b
+                            elif self.list[2] == aux_pos2:
+                                self.list[2] = i
+                            elif self.list[3] == aux_pos2:
+                                self.list[3] = i
 
                         for b in dama_list:
                             aux_pos2 = b.pos
@@ -425,6 +469,10 @@ class Dama:
                                 self.list2[0] = i
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = i
+                            elif self.list[2] == aux_pos2:
+                                self.list[2] = i
+                            elif self.list[3] == aux_pos2:
+                                self.list[3] = i
 
                         if self.list[0] == i:
                             for b in self.list2:
@@ -439,17 +487,40 @@ class Dama:
                                     if self.list2[1] == b:
                                         self.aux_list.append(b)
                                         eated = i.pos
+
+                        elif self.list[0] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[2] == b:
+                                        self.aux_list.append(b)
+                                        eated = i.pos
+
+                        elif self.list[1] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[3] == b:
+                                        self.aux_list.append(b)
+                                        eated = i.pos
+
         for i in dama_list:
             if i.selected is True:
                 if i is not self:
                     i.selected = False
+
         if pygame.mouse.get_pressed()[0] is True:
-            if self.color is red:
-                gameDisplay.blit(damar2, (self.pos[0], self.pos[1], 10, 10))
-            elif self.color is blue:
-                gameDisplay.blit(damab2, (self.pos[0], self.pos[1], 10, 10))
+            if self.is_queen is True:
+                if self.color is red:
+                    gameDisplay.blit(queenr2, (self.pos[0], self.pos[1], 10, 10))
+                elif self.color is blue:
+                    gameDisplay.blit(queenb2, (self.pos[0], self.pos[1], 10, 10))
+            elif self.is_queen is False:
+                if self.color is red:
+                    gameDisplay.blit(damar2, (self.pos[0], self.pos[1], 10, 10))
+                elif self.color is blue:
+                    gameDisplay.blit(damab2, (self.pos[0], self.pos[1], 10, 10))
 
         pygame.display.update()
+
 # RED DAMA CREATION
 dr1 = Dama((225, 0), red, False, 'red')
 dr2 = Dama((375, 0), red, False, 'red')

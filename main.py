@@ -81,6 +81,7 @@ class Square:
                                 i.top_rect = pygame.Rect(self.pos, (75, 75))
                                 for c in dama_list:
                                     if c.pos == eated:
+                                        print(c.pos, 'cpos')
                                         name = Square(c.pos)
                                         square_list.append(name)
                                         c.pos = (0, 0)
@@ -312,10 +313,10 @@ class Dama:
                             self.list2[0] = b
                         elif self.list2[1] == aux_pos2:
                             self.list2[1] = b
-                        elif self.list[2] == aux_pos2:
-                            self.list[2] = b
-                        elif self.list[3] == aux_pos2:
-                            self.list[3] = b
+                        elif self.list2[2] == aux_pos2:
+                            self.list2[2] = b
+                        elif self.list2[3] == aux_pos2:
+                            self.list2[3] = b
 
                     for b in dama_list:
                         aux_pos2 = b.pos
@@ -323,10 +324,10 @@ class Dama:
                             self.list2[0] = b
                         elif self.list2[1] == aux_pos2:
                             self.list2[1] = b
-                        elif self.list[2] == aux_pos2:
-                            self.list[2] = b
-                        elif self.list[3] == aux_pos2:
-                            self.list[3] = b
+                        elif self.list2[2] == aux_pos2:
+                            self.list2[2] = b
+                        elif self.list2[3] == aux_pos2:
+                            self.list2[3] = b
 
                         if self.list[0] == i:
                             for b in self.list2:
@@ -392,7 +393,6 @@ class Dama:
                                 if isinstance(b, Square) is True:
                                     if self.list2[3] == b:
                                         self.aux_list.append(b)
-
 
         for i in self.aux_list:
             if isinstance(i, Square) is True:
@@ -484,6 +484,7 @@ class Dama:
                                     if self.list2[1] == b:
                                         self.aux_list.append(b)
                                         eated = i.pos
+
         for i in dama_list:
             if i.selected is True:
                 if i is not self:
@@ -524,6 +525,30 @@ class Dama:
             elif self.list[3] == aux_pos2:
                 self.list[3] = i
 
+        # self.list.append((self.pos[0] - 75, self.pos[1] - 75))
+        # self.list.append((self.pos[0] + 75, self.pos[1] - 75))
+        # self.list.append((self.pos[0] + 75, self.pos[1] + 75))
+        # self.list.append((self.pos[0] - 75, self.pos[1] + 75))
+        #
+        # for i in square_list:
+        #     if self.list[0] == i.pos:
+        #         self.list.append((self.pos[0] - 150, self.pos[1] - 150))
+        #     elif self.list[1] == i.pos:
+        #         self.list.append((self.pos[0] + 150, self.pos[1] - 150))
+        #     elif self.list[2] == i.pos:
+        #         self.list.append((self.pos[0] + 150, self.pos[1] + 150))
+        #     elif self.list[3] == i.pos:
+        #         self.list.append((self.pos[0] - 150, self.pos[1] + 150))
+        #
+        # for n in range(len(self.list)):
+        #     n = 0
+        #     for i in square_list:
+        #         aux_pos2 = i.pos
+        #         if self.list[n] == aux_pos2:
+        #             self.list[n] = i
+        #     n + 1
+        #     print(n)
+
         for i in self.list:
             if isinstance(i, Dama) is True:
                 if self.color is red:
@@ -535,10 +560,10 @@ class Dama:
                                 self.list2[0] = b
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = b
-                            elif self.list[2] == aux_pos2:
-                                self.list[2] = b
-                            elif self.list[3] == aux_pos2:
-                                self.list[3] = b
+                            elif self.list2[2] == aux_pos2:
+                                self.list2[2] = b
+                            elif self.list2[3] == aux_pos2:
+                                self.list2[3] = b
 
                         for b in dama_list:
                             aux_pos2 = b.pos
@@ -546,10 +571,10 @@ class Dama:
                                 self.list2[0] = b
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = b
-                            elif self.list[2] == aux_pos2:
-                                self.list[2] = b
-                            elif self.list[3] == aux_pos2:
-                                self.list[3] = b
+                            elif self.list2[2] == aux_pos2:
+                                self.list2[2] = b
+                            elif self.list2[3] == aux_pos2:
+                                self.list2[3] = b
 
                         if self.list[0] == i:
                             for b in self.list2:
@@ -568,7 +593,6 @@ class Dama:
                         elif self.list[2] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
-                                    ##FALLAN ESTO de abajo
                                     if self.list2[2] == b:
                                         self.aux_list.append(b)
                                         eated = i.pos
@@ -576,7 +600,6 @@ class Dama:
                         elif self.list[3] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
-                                    ##FALLAN ESTO de abajo
                                     if self.list2[3] == b:
                                         self.aux_list.append(b)
                                         eated = i.pos
@@ -590,10 +613,10 @@ class Dama:
                                 self.list2[0] = b
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = b
-                            elif self.list[2] == aux_pos2:
-                                self.list[2] = b
-                            elif self.list[3] == aux_pos2:
-                                self.list[3] = b
+                            elif self.list2[2] == aux_pos2:
+                                self.list2[2] = b
+                            elif self.list2[3] == aux_pos2:
+                                self.list2[3] = b
 
                         for b in dama_list:
                             aux_pos2 = b.pos
@@ -601,10 +624,10 @@ class Dama:
                                 self.list2[0] = b
                             elif self.list2[1] == aux_pos2:
                                 self.list2[1] = b
-                            elif self.list[2] == aux_pos2:
-                                self.list[2] = b
-                            elif self.list[3] == aux_pos2:
-                                self.list[3] = b
+                            elif self.list2[2] == aux_pos2:
+                                self.list2[2] = b
+                            elif self.list2[3] == aux_pos2:
+                                self.list2[3] = b
 
                         if self.list[0] == i:
                             for b in self.list2:
@@ -612,7 +635,7 @@ class Dama:
                                     if self.list2[0] == b:
                                         self.aux_list.append(b)
                                         eated = i.pos
-                                        print(eated)
+
                         elif self.list[1] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
@@ -623,18 +646,14 @@ class Dama:
                         elif self.list[2] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
-                                    ## Falla esto de abajo
                                     if self.list2[2] == b:
-                                        print("2")
                                         self.aux_list.append(b)
                                         eated = i.pos
 
                         elif self.list[3] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
-                                    ##Falla esto de abajo
                                     if self.list2[3] == b:
-                                        print("3")
                                         self.aux_list.append(b)
                                         eated = i.pos
         for i in dama_list:
@@ -730,6 +749,6 @@ while not gameExit:
 ################################################################
 # TODO
 #
-#
+# ERROR IN EATING,  IN DAMA.SELECT(), SELF.AUX_LIST NOT WORKING WELL
 #
 ################################################################

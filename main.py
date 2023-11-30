@@ -119,7 +119,7 @@ class Square:
                                     turn = 'red'
                                 elif turn == 'red':
                                     turn = 'blue'
-
+                            Global_has_to_eat = False
 # DAMA CLASS
 class Dama:
 
@@ -161,23 +161,23 @@ class Dama:
 
         for i in self.list:
             if isinstance(i, Dama) is True:
+                self.list2 = i.get_list2()
+                for b in square_list:
+                    aux_pos2 = b.pos
+                    if self.list2[0] == aux_pos2:
+                        self.list2[0] = b
+                    elif self.list2[1] == aux_pos2:
+                        self.list2[1] = b
+
+                for b in dama_list:
+                    aux_pos2 = b.pos
+                    if self.list2[0] == aux_pos2:
+                        self.list2[0] = i
+                    elif self.list2[1] == aux_pos2:
+                        self.list2[1] = i
+
                 if self.color is red:
                     if i.color is blue:
-                        self.list2 = i.get_list2()
-                        for b in square_list:
-                            aux_pos2 = b.pos
-                            if self.list2[0] == aux_pos2:
-                                self.list2[0] = b
-                            elif self.list2[1] == aux_pos2:
-                                self.list2[1] = b
-
-                        for b in dama_list:
-                            aux_pos2 = b.pos
-                            if self.list2[0] == aux_pos2:
-                                self.list2[0] = i
-                            elif self.list2[1] == aux_pos2:
-                                self.list2[1] = i
-
                         if self.list[0] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
@@ -195,21 +195,6 @@ class Dama:
 
                 elif self.color is blue:
                     if i.color is red:
-                        self.list2 = i.get_list2()
-                        for b in square_list:
-                            aux_pos2 = b.pos
-                            if self.list2[0] == aux_pos2:
-                                self.list2[0] = b
-                            elif self.list2[1] == aux_pos2:
-                                self.list2[1] = b
-
-                        for b in dama_list:
-                            aux_pos2 = b.pos
-                            if self.list2[0] == aux_pos2:
-                                self.list2[0] = i
-                            elif self.list2[1] == aux_pos2:
-                                self.list2[1] = i
-
                         if self.list[0] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
@@ -222,6 +207,123 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[1] == b:
+                                        print(self.pos, "Has to eat")
+                                        self.has_to_eat = True
+                                        Global_has_to_eat = True
+    def queen_check_has_to_eat(self):
+        global Global_has_to_eat
+        self.list = self.get_list()
+        for i in dama_list:
+            aux_pos = i.pos
+            if self.list[0] == aux_pos:
+                self.list[0] = i
+            elif self.list[1] == aux_pos:
+                self.list[1] = i
+            elif self.list[2] == aux_pos:
+                self.list[2] = i
+            elif self.list[3] == aux_pos:
+                self.list[3] = i
+
+        for i in square_list:
+            aux_pos2 = i.pos
+            if self.list[0] == aux_pos2:
+                self.list[0] = i
+            elif self.list[1] == aux_pos2:
+                self.list[1] = i
+            elif self.list[2] == aux_pos2:
+                self.list[2] = i
+            elif self.list[3] == aux_pos2:
+                self.list[3] = i
+
+        for i in self.list:
+            if isinstance(i, Dama) is True:
+                self.list2 = i.get_list2()
+                for b in square_list:
+                    aux_pos2 = b.pos
+                    if self.list2[0] == aux_pos2:
+                        self.list2[0] = b
+                    elif self.list2[1] == aux_pos2:
+                        self.list2[1] = b
+                    elif self.list2[2] == aux_pos2:
+                        self.list2[2] = b
+                    elif self.list2[3] == aux_pos2:
+                        self.list2[3] = b
+
+                for b in dama_list:
+                    aux_pos2 = b.pos
+                    if self.list2[0] == aux_pos2:
+                        self.list2[0] = b
+                    elif self.list2[1] == aux_pos2:
+                        self.list2[1] = b
+                    elif self.list2[2] == aux_pos2:
+                        self.list2[2] = b
+                    elif self.list2[3] == aux_pos2:
+                        self.list2[3] = b
+
+                if self.color is red:
+                    if i.color is blue:
+                        if self.list[0] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[0] == b:
+                                        print(self.pos, "Has to eat")
+                                        self.has_to_eat = True
+                                        Global_has_to_eat = True
+
+                        elif self.list[1] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[1] == b:
+                                        print(self.pos, "Has to eat")
+                                        self.has_to_eat = True
+                                        Global_has_to_eat = True
+
+                        elif self.list[2] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[2] == b:
+                                        print(self.pos, "Has to eat")
+                                        self.has_to_eat = True
+                                        Global_has_to_eat = True
+
+                        elif self.list[3] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[3] == b:
+                                        print(self.pos, "Has to eat")
+                                        self.has_to_eat = True
+                                        Global_has_to_eat = True
+
+                elif self.color is blue:
+                    if i.color is red:
+                        if self.list[0] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[0] == b:
+                                        print(self.pos, "Has to eat")
+                                        self.has_to_eat = True
+                                        Global_has_to_eat = True
+
+                        elif self.list[1] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[1] == b:
+                                        print(self.pos, "Has to eat")
+                                        self.has_to_eat = True
+                                        Global_has_to_eat = True
+
+                        elif self.list[2] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[2] == b:
+                                        print(self.pos, "Has to eat")
+                                        self.has_to_eat = True
+                                        Global_has_to_eat = True
+
+                        elif self.list[3] == i:
+                            for b in self.list2:
+                                if isinstance(b, Square) is True:
+                                    if self.list2[3] == b:
                                         print(self.pos, "Has to eat")
                                         self.has_to_eat = True
                                         Global_has_to_eat = True
@@ -599,28 +701,6 @@ class Dama:
         self.aux_list = []
         self.list = []
         self.selected = True
-        # self.list = self.get_list_queen()
-        # for i in dama_list:
-        #     aux_pos = i.pos
-        #     if self.list[0] == aux_pos:
-        #         self.list[0] = i
-        #     elif self.list[1] == aux_pos:
-        #         self.list[1] = i
-        #     elif self.list[2] == aux_pos:
-        #         self.list[2] = i
-        #     elif self.list[3] == aux_pos:
-        #         self.list[3] = i
-        #
-        # for i in square_list:
-        #     aux_pos2 = i.pos
-        #     if self.list[0] == aux_pos2:
-        #         self.list[0] = i
-        #     elif self.list[1] == aux_pos2:
-        #         self.list[1] = i
-        #     elif self.list[2] == aux_pos2:
-        #         self.list[2] = i
-        #     elif self.list[3] == aux_pos2:
-        #         self.list[3] = i
 
         self.list.append((self.pos[0] - 75, self.pos[1] - 75))
         self.list.append((self.pos[0] + 75, self.pos[1] - 75))
@@ -638,6 +718,7 @@ class Dama:
                 self.list.append((self.pos[0] - 150, self.pos[1] + 150))
 
         for i in dama_list:
+            i.queen_check_has_to_eat()
             aux_pos = i.pos
             if self.list[0] == aux_pos:
                 self.list[0] = i
@@ -651,7 +732,6 @@ class Dama:
         print(self.list)
         n = 0
         for i in self.list:
-
             for b in square_list:
                 if self.list[n] == b.pos:
                     self.list[n] = b
@@ -660,31 +740,31 @@ class Dama:
 
         for i in self.list:
             if isinstance(i, Dama) is True:
+                self.list2 = i.get_list_queen2()
+                for b in square_list:
+                    aux_pos2 = b.pos
+                    if self.list2[0] == aux_pos2:
+                        self.list2[0] = b
+                    elif self.list2[1] == aux_pos2:
+                        self.list2[1] = b
+                    elif self.list2[2] == aux_pos2:
+                        self.list2[2] = b
+                    elif self.list2[3] == aux_pos2:
+                        self.list2[3] = b
+
+                for b in dama_list:
+                    aux_pos2 = b.pos
+                    if self.list2[0] == aux_pos2:
+                        self.list2[0] = b
+                    elif self.list2[1] == aux_pos2:
+                        self.list2[1] = b
+                    elif self.list2[2] == aux_pos2:
+                        self.list2[2] = b
+                    elif self.list2[3] == aux_pos2:
+                        self.list2[3] = b
+
                 if self.color is red:
                     if i.color is blue:
-                        self.list2 = i.get_list_queen2()
-                        for b in square_list:
-                            aux_pos2 = b.pos
-                            if self.list2[0] == aux_pos2:
-                                self.list2[0] = b
-                            elif self.list2[1] == aux_pos2:
-                                self.list2[1] = b
-                            elif self.list2[2] == aux_pos2:
-                                self.list2[2] = b
-                            elif self.list2[3] == aux_pos2:
-                                self.list2[3] = b
-
-                        for b in dama_list:
-                            aux_pos2 = b.pos
-                            if self.list2[0] == aux_pos2:
-                                self.list2[0] = b
-                            elif self.list2[1] == aux_pos2:
-                                self.list2[1] = b
-                            elif self.list2[2] == aux_pos2:
-                                self.list2[2] = b
-                            elif self.list2[3] == aux_pos2:
-                                self.list2[3] = b
-
                         if self.list[0] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
@@ -715,29 +795,6 @@ class Dama:
 
                 elif self.color is blue:
                     if i.color is red:
-                        self.list2 = i.get_list_queen2()
-                        for b in square_list:
-                            aux_pos2 = b.pos
-                            if self.list2[0] == aux_pos2:
-                                self.list2[0] = b
-                            elif self.list2[1] == aux_pos2:
-                                self.list2[1] = b
-                            elif self.list2[2] == aux_pos2:
-                                self.list2[2] = b
-                            elif self.list2[3] == aux_pos2:
-                                self.list2[3] = b
-
-                        for b in dama_list:
-                            aux_pos2 = b.pos
-                            if self.list2[0] == aux_pos2:
-                                self.list2[0] = b
-                            elif self.list2[1] == aux_pos2:
-                                self.list2[1] = b
-                            elif self.list2[2] == aux_pos2:
-                                self.list2[2] = b
-                            elif self.list2[3] == aux_pos2:
-                                self.list2[3] = b
-
                         if self.list[0] == i:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
@@ -861,7 +918,7 @@ while not gameExit:
 # ERROR IN EATING,  IN DAMA.SELECT(), SELF.AUX_LIST NOT WORKING WELL
 #
 # QUEEN ONLY GOES 2 SQUARES AT A TIME AND CAN'T EAT IN DISTANCE
-# OBLIGATION TO EAT IN MID WAY, WORKS BUT WHEN 2 HAVE OBLIGATION TO EAT IT BUGS
+# QUEEN OBLIGATION TO EAT NEEDS SELF.LIST FIXED, IT USES GET_LIST() IT NEED TO USE THE QUEEN() LIST METHOD
 #
 #
 ################################################################

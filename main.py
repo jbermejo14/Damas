@@ -1,8 +1,7 @@
 # IMPORTS
 import pygame
 import sys
-import time
-import os
+
 # IMAGES GENERATION
 bg = pygame.image.load("images/bg.png")
 damar = pygame.image.load("images/dama_roja.jpg")
@@ -30,6 +29,7 @@ gameExit = False
 gameDisplay.fill('white')
 pygame.draw.rect(gameDisplay, black, (750, 0, 150, 600))
 pygame.draw.rect(gameDisplay, black, (0, 0, 150, 600))
+
 
 # SQUARE CLASS
 class Square:
@@ -121,6 +121,14 @@ class Square:
                                 elif turn == 'red':
                                     turn = 'blue'
                             Global_has_to_eat = False
+                for i in square_list:
+                    for b in damab_list:
+                        i.rect = pygame.draw.rect(gameDisplay, black, (i.pos[0], i.pos[1], 75, 75))
+                        gameDisplay.blit(damab, (b.pos[0], b.pos[1], 10, 10))
+                    for b in damar_list:
+                        i.rect = pygame.draw.rect(gameDisplay, black, (i.pos[0], i.pos[1], 75, 75))
+                        gameDisplay.blit(damar, (b.pos[0], b.pos[1], 10, 10))
+
 # DAMA CLASS
 class Dama:
 
@@ -284,7 +292,6 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[0] == b:
-                                        print(self.pos, "Has to eat")
                                         self.has_to_eat = True
                                         Global_has_to_eat = True
 
@@ -292,7 +299,6 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[1] == b:
-                                        print(self.pos, "Has to eat")
                                         self.has_to_eat = True
                                         Global_has_to_eat = True
 
@@ -300,7 +306,6 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[2] == b:
-                                        print(self.pos, "Has to eat")
                                         self.has_to_eat = True
                                         Global_has_to_eat = True
 
@@ -308,7 +313,6 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[3] == b:
-                                        print(self.pos, "Has to eat")
                                         self.has_to_eat = True
                                         Global_has_to_eat = True
 
@@ -318,7 +322,6 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[0] == b:
-                                        print(self.pos, "Has to eat")
                                         self.has_to_eat = True
                                         Global_has_to_eat = True
 
@@ -326,7 +329,6 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[1] == b:
-                                        print(self.pos, "Has to eat")
                                         self.has_to_eat = True
                                         Global_has_to_eat = True
 
@@ -334,7 +336,6 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[2] == b:
-                                        print(self.pos, "Has to eat")
                                         self.has_to_eat = True
                                         Global_has_to_eat = True
 
@@ -342,7 +343,6 @@ class Dama:
                             for b in self.list2:
                                 if isinstance(b, Square) is True:
                                     if self.list2[3] == b:
-                                        print(self.pos, "Has to eat")
                                         self.has_to_eat = True
                                         Global_has_to_eat = True
 
@@ -390,19 +390,13 @@ class Dama:
         return pos_list
 
     def get_list_queen(self):
-        pos_list = []
-        pos_list.append((self.pos[0] - 75, self.pos[1] - 75))
-        pos_list.append((self.pos[0] + 75, self.pos[1] - 75))
-        pos_list.append((self.pos[0] + 75, self.pos[1] + 75))
-        pos_list.append((self.pos[0] - 75, self.pos[1] + 75))
+        pos_list = [(self.pos[0] - 75, self.pos[1] - 75), (self.pos[0] + 75, self.pos[1] - 75),
+                    (self.pos[0] + 75, self.pos[1] + 75), (self.pos[0] - 75, self.pos[1] + 75)]
         return pos_list
 
     def get_list_queen2(self):
-        pos_list = []
-        pos_list.append((self.pos[0] - 75, self.pos[1] - 75))
-        pos_list.append((self.pos[0] + 75, self.pos[1] - 75))
-        pos_list.append((self.pos[0] + 75, self.pos[1] + 75))
-        pos_list.append((self.pos[0] - 75, self.pos[1] + 75))
+        pos_list = [(self.pos[0] - 75, self.pos[1] - 75), (self.pos[0] + 75, self.pos[1] - 75),
+                    (self.pos[0] + 75, self.pos[1] + 75), (self.pos[0] - 75, self.pos[1] + 75)]
         return pos_list
 
     def double_eat(self):
@@ -706,23 +700,34 @@ class Dama:
                 if pygame.mouse.get_pressed()[0] is True:
                     for i in square_list:
                         if i in self.list:
-                            self.rect = pygame.draw.rect(gameDisplay, blue, (i.pos[0], i.pos[1], 75, 75))
-                            pygame.display.update()
+                            i.rect = pygame.draw.rect(gameDisplay, blue, (i.pos[0], i.pos[1], 75, 75))
+                        elif i in self.aux_list:
+                            i.rect = pygame.draw.rect(gameDisplay, blue, (i.pos[0], i.pos[1], 75, 75))
                         else:
-                            self.rect = pygame.draw.rect(gameDisplay, black, (i.pos[0], i.pos[1], 75, 75))
-                            pygame.display.update()
+                            for b in damab_list:
+                                i.rect = pygame.draw.rect(gameDisplay, black, (i.pos[0], i.pos[1], 75, 75))
+                                gameDisplay.blit(damab, (b.pos[0], b.pos[1], 10, 10))
+                            for b in damar_list:
+                                i.rect = pygame.draw.rect(gameDisplay, black, (i.pos[0], i.pos[1], 75, 75))
+                                gameDisplay.blit(damar, (b.pos[0], b.pos[1], 10, 10))
                     gameDisplay.blit(damab2, (self.pos[0], self.pos[1], 10, 10))
+                    pygame.display.update()
+
         elif self.color is red:
             if turn is 'red':
                 if pygame.mouse.get_pressed()[0] is True:
                     for i in square_list:
                         if i in self.list:
-                            self.rect = pygame.draw.rect(gameDisplay, blue, (i.pos[0], i.pos[1], 75, 75))
-                            pygame.display.update()
+                            i.rect = pygame.draw.rect(gameDisplay, blue, (i.pos[0], i.pos[1], 75, 75))
+                        elif i in self.aux_list:
+                            i.rect = pygame.draw.rect(gameDisplay, blue, (i.pos[0], i.pos[1], 75, 75))
                         else:
-                            self.rect = pygame.draw.rect(gameDisplay, black, (i.pos[0], i.pos[1], 75, 75))
-                            pygame.display.update()
-
+                            for b in damab_list:
+                                i.rect = pygame.draw.rect(gameDisplay, black, (i.pos[0], i.pos[1], 75, 75))
+                                gameDisplay.blit(damab, (b.pos[0], b.pos[1], 10, 10))
+                            for b in damar_list:
+                                i.rect = pygame.draw.rect(gameDisplay, black, (i.pos[0], i.pos[1], 75, 75))
+                                gameDisplay.blit(damar, (b.pos[0], b.pos[1], 10, 10))
                     gameDisplay.blit(damar2, (self.pos[0], self.pos[1], 10, 10))
 
         for i in dama_list:
@@ -877,6 +882,7 @@ class Dama:
 
         pygame.display.update()
 
+
 # RED DAMA CREATION
 dr1 = Dama((225, 0), red, 'red')
 dr2 = Dama((375, 0), red, 'red')
@@ -928,13 +934,16 @@ damar_list = [dr1, dr2, dr3, dr4, dr5, dr6, dr7, dr8, dr9, dr10, dr11, dr12]
 # BLUE DAMA LIST
 damab_list = [db1, db2, db3, db4, db5, db6, db7, db8, db9, db10, db11, db12]
 
+
 def damab_click_checks():
     for i in dama_list:
         i.check_click()
 
+
 def board_click_checks():
     for i in square_list:
         i.check_click()
+
 
 pygame.display.update()
 
@@ -947,14 +956,15 @@ while not gameExit:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
- 
+
 ################################################################
 # TODO
 #
-# ERROR IN EATING,  IN DAMA.SELECT(), SELF.AUX_LIST NOT WORKING WELL
+# ERROR IN EATING,  IN DAMA.SELECT(), SELF.AUX_LIST NOT WORKING WELL (IT AFFECTS TO EATING AND THE SQUARE PAINTING)
 #
 # QUEEN ONLY GOES 2 SQUARES AT A TIME AND CAN'T EAT IN DISTANCE
 # QUEEN OBLIGATION TO EAT NEEDS SELF.LIST FIXED, IT USES GET_LIST() IT NEED TO USE THE QUEEN() LIST METHOD
+#
 #
 #
 ################################################################
